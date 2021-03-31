@@ -1,0 +1,17 @@
+# An example of numbers and their operations.
+var Int int1 = 3
+var Float float1 = 17.34
+print(toInt(float1))
+# 17
+# Drops decimal point
+print(round(float1))
+#17
+# Rounds - this time it rounded down.
+print(roundUp(float1))
+#18
+# Rounds - forced to round up.
+print(roundDown(float1))
+#17
+# Rounds - forced to round down.
+print(int1+float1)
+#Type Error for adding a float to an int.

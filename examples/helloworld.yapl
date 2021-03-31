@@ -1,0 +1,8 @@
+# A simple example of a hello world.
+print("Hello World")
+print("dlroW olleH".reverse()) # An example of built-in str.reverse() function.
+print("Hello ".."World") # An example of concat.
+print("Hello"..."World") # An example of spaced concat.
+var Str text1 = "Hello"
+var Str text2 = "World"
+print("$text1$ $text2$") # An example of variables in strings.

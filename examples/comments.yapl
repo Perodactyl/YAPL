@@ -1,0 +1,9 @@
+# A single line comment
+print("foobar") # An example of a single line comment after code
+##Block comment
+blah
+blah
+blah
+##
+##Inline-block comment##
+print(##example of inline-block comment##"foobar")

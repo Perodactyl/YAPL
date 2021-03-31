@@ -1,0 +1,13 @@
+var Object ob1 = {}
+add(ob1, "keyname", "somevalue")
+# returns "somevalue" for convenience.
+get(ob1, "keyname")
+# returns "somevalue", because that's the value of "keyname"
+set(ob1, "keyname", "foobar")
+# returns "foobar" for convenience, and sets "keyname" to "foobar"
+
+# A more convenient method:
+print(ob1["keyname"])
+# "foobar", because that's what we just made it be.
+print(ob1[0])
+# "foobar", because it is index 0, and it's convenient
