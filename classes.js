@@ -33,7 +33,7 @@ module.exports = {
             })
         }
         add(name, data){
-            this.contents.push(new TSVar(name, data))
+            this.contents.push(new module.exports.TSVar(name, data))
         }
         get(name){
             var foundResult = null
@@ -44,6 +44,27 @@ module.exports = {
             })
             if(foundResult)return foundResult.val
             return null
+        }
+        has(name){
+            var foundResult = false
+            this.contents.forEach((val)=>{
+                if(val.name == name){
+                    foundResult = true
+                }
+            })
+            return foundResult
+        }
+        add(name, value){
+            this.contents.push(new module.exports.TSVar(name, value))
+        }
+        set(name, value){
+            var foundResult = null
+            this.contents.forEach((val)=>{
+                if(val.name == name){
+                    foundResult = val
+                }
+            })
+            val.val = value
         }
     }
 }
