@@ -1,0 +1,29 @@
+{
+  "name": "yapl",
+  "version": "1.0.0",
+  "description": "Yet Another Programming Language",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Perodactyl/YAPL.git"
+  },
+  "keywords": [
+    "language",
+    "programming",
+    "lang",
+    "js"
+  ],
+  "author": "Perodactyl",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Perodactyl/YAPL/issues"
+  },
+  "homepage": "https://github.com/Perodactyl/YAPL#readme",
+  "dependencies": {
+    "fs": "0.0.1-security",
+    "readline": "^1.3.0"
+  }
+}
