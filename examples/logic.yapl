@@ -1,0 +1,20 @@
+var Str str1 = "foo"
+var Str str2 = "bar"
+var Str str3 = "foo"
+var Bool eqCheck = str1==str3
+# true because str1 equals str3
+var Str str4 = "foobar"
+if str1 == str2:
+    print("Equivalent.")
+elif str1 == str4:
+    print("Also Equivalent.")
+else:
+    print("Not equivalent.")
+# prints "Not equivalent."
+if str1 == str1:
+    print("Equivalent.")
+elif str1 == str3:
+    print("Also Equivalent.")
+else:
+    print("Not equivalent.")
+# prints "Equivalent." because it found that match before the next, so all else or elif statements were canceled.

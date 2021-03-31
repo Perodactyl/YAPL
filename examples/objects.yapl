@@ -11,3 +11,8 @@ print(ob1["keyname"])
 # "foobar", because that's what we just made it be.
 print(ob1[0])
 # "foobar", because it is index 0, and it's convenient
+
+# Arrays don't exist, but there is a method for adding numeric keys.
+addNum(ob1, "numKey")
+# Now, ob1[1] is "numKey"
+#Adding to an object using the simple method lets you interact with it as an array.
