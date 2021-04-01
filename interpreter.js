@@ -3,24 +3,46 @@ YAPL: Yet Another Programming Language
 Made for fun.
 This is the statement interpreter.
 */
-const cls = require("./classes")
 const colors = require("colors")
+var ep = null
+var cls = null
 /**
  * 
  * @param {String} statement The code to be run.
  * @param {Env} env The environment to use.
  */
-var nativeFuncs = { // functions that are native.
+var nativeFuncs = { // functions that are native. All passed values are TSVar clones.
     print(...data){
         data.forEach((val, index)=>{
-            val = val.replace(/\"/g, "")
-            val = val.trim()
+            val = val.val
             data[index] = val
         })
         console.log.apply(global, data)
     }
 }
-module.exports = function interpretStatement(statement, env, ep){
+function strToNative(str) {
+    var output = null
+    var mc = null
+    if(mc = str.match(/"((?:[^"\\]|\\.)+)"/)){
+        str = mc[1]
+        output = new cls.TSVar(null, str, ep.types.str)
+    }else if(mc = str.match(/([0-9]*)\.([0-9]+)/)){
+        output = new cls.TSVar(null, parseFloat(mc[1]+"."+mc[2]))
+    }else if(mc = str.match(/([0-9]+)/)){
+        output = new cls.TSVar(null, parseInt(mc[1]), ep.types.int)
+    }
+    return output
+}
+/**
+ * 
+ * @param {String} statement The code to execute.
+ * @param {cls.Env} env The environment to run code in.
+ * @param {Object} lep Local version of EP constant.
+ * @returns {undefined} Nothing.
+ */
+module.exports = function interpretStatement(statement, env, lep){
+    cls = require("./classes")(lep)
+    ep = lep
     statement = statement.trim()
     if(statement == "")return
     statement = statement.replace(/([\w+|[0-9]+])/g, (m, g1)=>{
@@ -41,6 +63,11 @@ module.exports = function interpretStatement(statement, env, ep){
     if(mc = stm.match(mcs.func)){
 		var funcName = mc[1]
 		var funcArgs = mc[2].split(',')
+        funcArgs.forEach((name, index)=>{
+            name = name.trim()
+            name = strToNative(name)
+            funcArgs[index] = name
+        })
 		if (nativeFuncs[funcName]) {
 			nativeFuncs[funcName].apply(this, funcArgs);
         }
