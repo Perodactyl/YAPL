@@ -57,8 +57,8 @@ const classdata = {
             })
             return foundResult
         }
-        add(name, value){
-            this.contents.push(new classdata.TSVar(name, value))
+        add(name, value, type){
+            this.contents.push(new classdata.TSVar(name, value, type))
         }
         set(name, value, type){
             var foundResult = null
