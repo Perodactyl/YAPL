@@ -20,16 +20,26 @@ var nativeFuncs = { // functions that are native. All passed values are TSVar cl
         console.log.apply(global, data)
     }
 }
-function strToNative(str) {
+//Converts a string to a TSVar. if an edit var(eVar) is passed, modifies it's value.
+function strToNative(str, eVar) {
     var output = null
     var mc = null
-    if(mc = str.match(/"((?:[^"\\]|\\.)+)"/)){
+    if(mc = str.match(/^"((?:[^"\\]|\\.)+)"$/)){
         str = mc[1]
         output = new cls.TSVar(null, str, ep.types.str)
-    }else if(mc = str.match(/([0-9]*)\.([0-9]+)/)){
+    }else if(mc = str.match(/^([0-9]*)\.([0-9]+)$/)){
         output = new cls.TSVar(null, parseFloat(mc[1]+"."+mc[2]))
-    }else if(mc = str.match(/([0-9]+)/)){
+    }else if(mc = str.match(/^([0-9]+)$/)){
         output = new cls.TSVar(null, parseInt(mc[1]), ep.types.int)
+    }else if(mc  = str.match(/^(true|false|True|False)$/)){
+        output = new cls.TSVar(null, mc[1].toLowerCase() == "true", ep.types.bool)
+    }
+    if(!output){
+        throw new Error("Could not parse value.")
+    }
+    if(eVar){
+        eVar.type = output.type
+        eVar.val = output.val
     }
     return output
 }
