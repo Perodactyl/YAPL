@@ -18,6 +18,9 @@ var nativeFuncs = { // functions that are native. All passed values are TSVar cl
             data[index] = val
         })
         console.log.apply(global, data)
+    },
+    reverse(str){
+        return new cls.TSVar(null, str.val.split("").reverse().join(""), ep.types.str)
     }
 }
 //Converts a string to a TSVar. if an edit var(eVar) is passed, modifies it's value.
@@ -43,6 +46,26 @@ function strToNative(str, eVar) {
     }
     return output
 }
+function nativeToStr(tsvar){
+    var val = tsvar.val
+    var tp = typeof val
+    var output = null
+    if(tp === "string"){
+        output = `"${val}"`
+    }else if(tp === "number"){
+        output = `${val}`
+    }else if(tp === "boolean"){
+        output = (val ? "true" : "false")
+    }
+    return output
+}
+function parseType(str){
+    var type = ep.types.any
+    if(ep.types[str.toLowerCase()]){
+        type = ep.types[str.toLowerCase()]
+    }
+    return type
+}
 /**
  * 
  * @param {String} statement The code to execute.
@@ -55,7 +78,7 @@ module.exports = function interpretStatement(statement, env, lep){
     ep = lep
     statement = statement.trim()
     if(statement == "")return
-    statement = statement.replace(/([\w+|[0-9]+])/g, (m, g1)=>{
+    statement = statement.replace(/(\w+|[0-9]+)/g, (m, g1)=>{
         if(env.has(g1)){
             return env.get(g1)
         }else{return m}
@@ -63,13 +86,10 @@ module.exports = function interpretStatement(statement, env, lep){
     var mcs = { //Match Cases.
         eqcheck: /(.*)\s*==\s*(.*)/,
         func: /(.+)\s*\(\s*([^)]*)\s*\)$/,
+        var: /var\s*(\w+)\s*(.+)\s*=\s*(.+)/
     }
     var mc //What case we matched.
     var stm = statement //Just an alias to make it less typing.
-    stm = stm.replace(mcs.eqcheck, (m, g1, g2)=>{
-        if(g1 == g2)return "true"
-        else return "false"
-    })
     if(mc = stm.match(mcs.func)){
 		var funcName = mc[1]
 		var funcArgs = mc[2].split(',')
@@ -79,9 +99,16 @@ module.exports = function interpretStatement(statement, env, lep){
             funcArgs[index] = name
         })
 		if (nativeFuncs[funcName]) {
-			nativeFuncs[funcName].apply(this, funcArgs);
+			var output = nativeFuncs[funcName].apply(this, funcArgs);
+            if(typeof output !== "undefined"){
+                stm = stm.replace(nativeToStr(output))
+            }
         }
-    } else {
-		console.log("No match");
-	}
+    } else if(mc = stm.match(mcs.var)){
+        env.add(mc[1], mc[3], parseType[mc[2]])
+    }
+    stm = stm.replace(mcs.eqcheck, (m, g1, g2)=>{
+        if(g1 == g2)return "true"
+        else return "false"
+    })
 }
