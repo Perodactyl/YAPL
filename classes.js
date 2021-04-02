@@ -3,7 +3,7 @@ const classdata = {
     //Trans-Scope var. Just some data, stored as an object with references instead of clones.
     TSVar:class{
         constructor(n, v, t){
-            t = (t ? t : ep.types.any)
+            t = (typeof t !== "undefined" ? t : ep.types.any)
             this.name = n
             this.val = v
             this.type = t
@@ -58,7 +58,7 @@ const classdata = {
             return foundResult
         }
         add(name, value, type){
-            this.contents.push(new classdata.TSVar(name, value, type))
+            this.contents.push(new classdata.TSVar(name.trim(), value, type))
         }
         set(name, value, type){
             var foundResult = null
