@@ -86,7 +86,7 @@ module.exports = function interpretStatement(statement, env, lep){
     var mcs = { //Match Cases.
         eqcheck: /(.*)\s*==\s*(.*)/,
         func: /(.+)\s*\(\s*([^)]*)\s*\)$/,
-        var: /var\s*(\w+)\s*(.+)\s*=\s*(.+)/
+        var: /var\s+(\w+)\s+(.+)\s*=\s*(.+)/
     }
     var mc //What case we matched.
     var stm = statement //Just an alias to make it less typing.
@@ -105,7 +105,7 @@ module.exports = function interpretStatement(statement, env, lep){
             }
         }
     } else if(mc = stm.match(mcs.var)){
-        env.add(mc[1], mc[3], parseType[mc[2]])
+        env.add(mc[2], mc[3], parseType(mc[1]))
     }
     stm = stm.replace(mcs.eqcheck, (m, g1, g2)=>{
         if(g1 == g2)return "true"
