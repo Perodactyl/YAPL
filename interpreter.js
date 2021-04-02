@@ -38,7 +38,7 @@ function strToNative(str, eVar) {
         output = new cls.TSVar(null, mc[1].toLowerCase() == "true", ep.types.bool)
     }
     if(!output){
-        throw new Error("Could not parse value.")
+        throw new Error(`Could not parse value:${str}`)
     }
     if(eVar){
         eVar.type = output.type
@@ -78,15 +78,15 @@ module.exports = function interpretStatement(statement, env, lep){
     ep = lep
     statement = statement.trim()
     if(statement == "")return
-    statement = statement.replace(/(\w+|[0-9]+)/g, (m, g1)=>{
-        if(env.has(g1)){
-            return env.get(g1)
-        }else{return m}
+    var envVars = env.list()
+    envVars.forEach((val, idx)=>{
+        var reg = new RegExp(env.contents[idx].name, "g")
+        statement = statement.replace(reg, val)
     })
     var mcs = { //Match Cases.
         eqcheck: /(.*)\s*==\s*(.*)/,
         func: /(.+)\s*\(\s*([^)]*)\s*\)$/,
-        var: /^var\s*(\w+)\s*(.+)\s*=\s*(.+)$/
+        var: /var\s+(\w+)\s+(.+)\s*=\s*(.+)/
     }
     var mc //What case we matched.
     var stm = statement //Just an alias to make it less typing.
@@ -105,7 +105,7 @@ module.exports = function interpretStatement(statement, env, lep){
             }
         }
     } else if(mc = stm.match(mcs.var)){
-        env.add(mc[2], mc[3], parseType[mc[1]])
+        env.add(mc[2], mc[3], parseType(mc[1]))
     }
     stm = stm.replace(mcs.eqcheck, (m, g1, g2)=>{
         if(g1 == g2)return "true"

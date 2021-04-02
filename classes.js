@@ -70,6 +70,13 @@ const classdata = {
             val.val = value
             val.type = (type ? type : val.type)
         }
+        list(){
+            var output = []
+            this.contents.forEach((val)=>{
+                output.push(val.val)
+            })
+            return output
+        }
     }
 }
 module.exports = (lep)=>{
