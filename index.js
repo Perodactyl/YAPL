@@ -9,6 +9,7 @@ var ep = { // Constants that other programs might use, ep standing for entry poi
     types:{
         any:0,
         str:1,
+        string:1,
         int:2,
         float:3,
         bool:4,
