@@ -13,5 +13,6 @@ module.exports = function startRepl(ep){
     say("YAPL", ep.verboseVersion, "REPL intialized.")
     inf.on("line", (ln)=>{
         interpretStatement(ln, env, ep)
+        say(ln)
     })
 }
